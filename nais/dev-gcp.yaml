@@ -1,0 +1,17 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: sosialhjelp-konvertering-til-pdf
+  namespace: teamdigisos
+  labels:
+    team: teamdigisos
+spec:
+  image: {{image}}
+  port: 3000
+  accessPolicy:
+    inbound:
+      rules:
+        - application: sosialhjelp-soknad-api-mock
+          cluster: dev-gcp
+  ingresses:
+    "https://sosialhjelp-konvertering-til-pdf.dev.intern.nav.no/sosialhjelp/konvertering-til-pdf"
