@@ -5,6 +5,8 @@ metadata:
   namespace: teamdigisos
   labels:
     team: teamdigisos
+  annotations:
+    nais.io/run-as-user: "1001"
 spec:
   image: {{image}}
   port: 3000
