@@ -16,4 +16,4 @@ spec:
         - application: sosialhjelp-soknad-api-mock
           cluster: dev-gcp
   ingresses:
-    - "https://sosialhjelp-konvertering-til-pdf.intern.dev.nav.no/"
+    - "https://konvertering-til-pdf.intern.dev.nav.no/"
