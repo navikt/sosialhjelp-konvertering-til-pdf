@@ -1,6 +1,8 @@
 name: Deploy to dev-gcp
 
 on:
+  push:
+    branches: ['main']
   workflow_dispatch:
 
 jobs:
