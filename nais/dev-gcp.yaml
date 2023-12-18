@@ -10,6 +10,17 @@ metadata:
 spec:
   image: {{image}}
   port: 3000
+  liveness:
+    path: /health
+    #port: 3000
+    initialDelay: 60
+    timeout: 5
+    failureThreshold: 10
+  #readiness:
+    #path: /hea
+    #initialDelay: 60
+    #timeout: 5
+    #port: 3000
   accessPolicy:
     inbound:
       rules:
@@ -21,6 +32,7 @@ spec:
     min: 2
     max: 4
   resources:
+    # for lite ressurser allokert kan føre til 503: Service Unavailable fra applikasjonen skjedde med cpu: 200m / mem: 500Mi
     limits:
       cpu: 1000m
       memory: 2Gi
