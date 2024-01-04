@@ -6,24 +6,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build and push Docker image
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Push docker image to GAR
-        uses: nais/docker-build-push@v0
-        id: docker-build-push
-        with:
-          team: teamdigisos # Replace
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} # Provided as Organization Secret
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }} # Provided as Organization Variable
+#  build:
+#    name: Build and push Docker image
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      id-token: write
+#    outputs:
+#      image: ${{ steps.docker-build-push.outputs.image }}
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      - name: Push docker image to GAR
+#        uses: nais/docker-build-push@v0
+#        id: docker-build-push
+#        with:
+#          team: teamdigisos # Replace
+#          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} # Provided as Organization Secret
+#          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }} # Provided as Organization Variable
 
   deploy:
     name: Deploy to NAIS
@@ -36,5 +36,5 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp # Replace
           RESOURCE: nais/dev-gcp.yaml
-          IMAGE: ${{ needs.build.outputs.image }}
+#          IMAGE: ${{ needs.build.outputs.image }}
           REF: ${{ github.sha }}
