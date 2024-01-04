@@ -12,6 +12,7 @@ spec:
   command:
     - "gotenberg"
     - "--api-disable-health-check-logging"
+    - "--libreoffice-auto-start"
   port: 3000
   liveness:
     path: /health
