@@ -1,4 +1,4 @@
-name: Deploy to prod-fss
+name: Deploy to prod
 
 on:
   workflow_dispatch:
