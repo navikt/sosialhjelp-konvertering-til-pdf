@@ -22,6 +22,6 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         name: "Deploy til ${{ matrix.cluster }}"
         env:
-          CLUSTER: prod-fss
+          CLUSTER: ${{ matrix.cluster }}
           RESOURCE: ${{ matrix.resource }}
           REF: ${{ github.sha }}
