@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: nais/deploy/actions/deploy@v2
+        name: "Deploy til dev-gcp"
         env:
           CLUSTER: dev-gcp
           RESOURCE: nais/dev-gcp.yaml

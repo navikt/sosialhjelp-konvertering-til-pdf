@@ -8,7 +8,7 @@ metadata:
   annotations:
     nais.io/run-as-user: "1001"
 spec:
-  image: ghcr.io/navikt/sosialhjelp-konvertering-til-pdf/gotenberg:8.0.0
+  image: europe-north1-docker.pkg.dev/nais-management-233d/teamdigisos/gotenberg:8
   command:
     - "gotenberg"
     - "--api-disable-health-check-logging"

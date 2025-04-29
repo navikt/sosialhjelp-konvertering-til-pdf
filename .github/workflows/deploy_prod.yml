@@ -7,21 +7,13 @@ jobs:
   deploy:
     name: "Deploy to NAIS"
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - cluster: prod-fss
-            resource: nais/prod-fss.yaml
-          - cluster: prod-gcp
-            resource: nais/prod-gcp.yaml
     permissions:
         id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: nais/deploy/actions/deploy@v2
-        name: "Deploy til ${{ matrix.cluster }}"
+        name: "Deploy til prod-gcp"
         env:
-          CLUSTER: ${{ matrix.cluster }}
-          RESOURCE: ${{ matrix.resource }}
+          CLUSTER: prod-gcp
+          RESOURCE: nais/prod-gcp.yaml
           REF: ${{ github.sha }}
