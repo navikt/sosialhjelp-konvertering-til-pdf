@@ -28,6 +28,7 @@ spec:
         - application: sosialhjelp-avtaler-api-dev
         - application: sosialhjelp-soknad-api
         - application: sosialhjelp-soknad-api-dev
+        - application: sosialhjelp-upload-dev
   ingresses:
     - "https://konvertering-til-pdf.intern.dev.nav.no/"
   replicas:
