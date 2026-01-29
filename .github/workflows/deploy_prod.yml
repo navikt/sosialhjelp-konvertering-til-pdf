@@ -18,7 +18,7 @@ jobs:
     permissions:
         id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: nais/deploy/actions/deploy@v2
         name: "Deploy til ${{ matrix.cluster }}"
         env:
