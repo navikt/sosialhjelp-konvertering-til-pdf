@@ -24,6 +24,7 @@ spec:
     inbound:
       rules:
         - application: sosialhjelp-soknad-api
+        - application: sosialhjelp-upload
   replicas:
     min: 1
     max: 4
