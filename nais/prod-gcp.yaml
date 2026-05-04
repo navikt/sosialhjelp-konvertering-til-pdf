@@ -26,11 +26,11 @@ spec:
         - application: sosialhjelp-soknad-api
         - application: sosialhjelp-upload
   replicas:
-    min: 1
+    min: 2
     max: 4
   resources:
     limits:
       memory: 1Gi
     requests:
-      cpu: 5m
-      memory: 256Mi
+      cpu: 50m
+      memory: 288Mi
