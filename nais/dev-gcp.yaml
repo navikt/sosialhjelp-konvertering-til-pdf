@@ -41,3 +41,7 @@ spec:
     requests:
       cpu: 5m
       memory: 256Mi
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: sdk
