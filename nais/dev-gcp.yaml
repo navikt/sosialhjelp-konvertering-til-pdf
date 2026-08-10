@@ -8,10 +8,10 @@ metadata:
   annotations:
     nais.io/run-as-user: "1001"
 spec:
-  image: europe-north1-docker.pkg.dev/nais-management-233d/teamdigisos/gotenberg:8
+  image: europe-north1-docker.pkg.dev/nais-management-233d/teamdigisos/gotenberg:8.34.0
   command:
     - "gotenberg"
-    - "--api-disable-health-check-logging"
+    - "--api-disable-health-check-route-telemetry"
     - "--libreoffice-auto-start"
     - "--webhook-disable"
   port: 3000
@@ -35,6 +35,13 @@ spec:
   replicas:
     min: 1
     max: 4
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: sdk
+  env:
+    - name: OTEL_TRACES_EXPORTER
+      value: otlp
   resources:
     limits:
       memory: 1Gi
