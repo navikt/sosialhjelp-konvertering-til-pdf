@@ -11,7 +11,7 @@ spec:
   image: europe-north1-docker.pkg.dev/nais-management-233d/teamdigisos/gotenberg:8
   command:
     - "gotenberg"
-    - "--api-disable-health-check-logging"
+    - "--api-disable-health-check-route-telemetry"
     - "--libreoffice-auto-start"
     - "--webhook-disable"
   port: 3000
