@@ -1,0 +1,45 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: sosialhjelp-konvertering-til-pdf
+  namespace: teamdigisos
+  labels:
+    team: teamdigisos
+  annotations:
+    nais.io/run-as-user: "1001"
+spec:
+  image: {{ image }}
+  port: 3000
+  liveness:
+    path: /health
+    initialDelay: 60
+    timeout: 5
+    failureThreshold: 10
+  accessPolicy:
+    inbound:
+      rules:
+        - application: sosialhjelp-soknad-api-mock
+          cluster: dev-gcp
+        - application: sosialhjelp-avtaler-api-dev
+        - application: sosialhjelp-soknad-api
+        - application: sosialhjelp-upload-mock
+        - application: sosialhjelp-soknad-api-dev
+        - application: sosialhjelp-upload-dev
+  ingresses:
+    - "https://konvertering-til-pdf.intern.dev.nav.no/"
+  replicas:
+    min: 1
+    max: 4
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: sdk
+  env:
+    - name: OTEL_TRACES_EXPORTER
+      value: otlp
+  resources:
+    limits:
+      memory: 1Gi
+    requests:
+      cpu: 5m
+      memory: 256Mi

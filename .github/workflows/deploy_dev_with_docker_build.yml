@@ -1,0 +1,25 @@
+name: Deploy to dev-gcp with docker build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: "Build and deploy to NAIS"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: nais/docker-build-push@v0
+        id: docker-push
+        with:
+          team: teamdigisos
+      - uses: nais/deploy/actions/deploy@v2
+        name: "Deploy til dev-gcp"
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: nais/dev-gcp-deploy.yaml
+          IMAGE: ${{ steps.docker-push.outputs.image }}
+          REF: ${{ github.sha }}
