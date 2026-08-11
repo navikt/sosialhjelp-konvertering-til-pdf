@@ -1,4 +1,4 @@
-# Kovertering til PDF
+# Konvertering til PDF
 Dette repo kjører Gotenberg for å konvertere kjente filformater til PDF.
 [Gotenberg](https://gotenberg.dev/)
 
