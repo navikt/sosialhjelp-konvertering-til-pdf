@@ -8,12 +8,7 @@ metadata:
   annotations:
     nais.io/run-as-user: "1001"
 spec:
-  image: europe-north1-docker.pkg.dev/nais-management-233d/teamdigisos/gotenberg:8.34.0
-  command:
-    - "gotenberg"
-    - "--api-disable-health-check-route-telemetry"
-    - "--libreoffice-auto-start"
-    - "--webhook-disable"
+  image: {{ image }}
   port: 3000
   prometheus:
     enabled: true

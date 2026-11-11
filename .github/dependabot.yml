@@ -9,7 +9,8 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-    commit-message: "docker"
+    commit-message:
+      prefix: "docker"
 
   - package-ecosystem: "github-actions"
     directory: "/"
