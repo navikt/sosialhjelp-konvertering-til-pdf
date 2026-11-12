@@ -1,0 +1,83 @@
+name: Verify image
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Build image
+        run: docker build --pull --tag gotenberg-pr:test .
+
+      - name: Start container and wait for health
+        run: |
+          docker run --detach \
+            --name gotenberg-pr \
+            --publish 127.0.0.1:3000:3000 \
+            gotenberg-pr:test
+
+          curl --fail --silent --show-error \
+            --retry 30 \
+            --retry-delay 2 \
+            --retry-all-errors \
+            --retry-max-time 90 \
+            --max-time 3 \
+            --output /dev/null \
+            http://127.0.0.1:3000/health
+
+      - name: Verify Prometheus metrics
+        run: |
+          curl --fail --silent --show-error \
+            --max-time 10 \
+            --output "$RUNNER_TEMP/metrics.txt" \
+            http://127.0.0.1:3000/prometheus/metrics
+
+          if ! grep -Eq '^gotenberg_[a-zA-Z0-9_]+(\{|[[:space:]])' \
+            "$RUNNER_TEMP/metrics.txt"; then
+            echo '::error::No Gotenberg metric samples found'
+            cat "$RUNNER_TEMP/metrics.txt"
+            exit 1
+          fi
+
+      - name: Verify LibreOffice conversion
+        run: |
+          printf '%s\n' \
+            '{\rtf1\ansi Gotenberg PR smoke test.}' \
+            > "$RUNNER_TEMP/smoke.rtf"
+
+          curl --fail-with-body --silent --show-error \
+            --max-time 90 \
+            --form "files=@$RUNNER_TEMP/smoke.rtf" \
+            --output "$RUNNER_TEMP/result.pdf" \
+            http://127.0.0.1:3000/forms/libreoffice/convert
+
+          if [[ ! -s "$RUNNER_TEMP/result.pdf" ]] || \
+             [[ "$(head -c 5 "$RUNNER_TEMP/result.pdf")" != '%PDF-' ]]; then
+            echo '::error::Conversion did not produce a PDF'
+            exit 1
+          fi
+
+      - name: Print container logs on failure
+        if: failure()
+        run: |
+          if docker container inspect gotenberg-pr > /dev/null 2>&1; then
+            docker logs gotenberg-pr
+          fi
+
+      - name: Remove container
+        if: always()
+        run: |
+          if docker container inspect gotenberg-pr > /dev/null 2>&1; then
+            docker rm --force gotenberg-pr
+          fi
