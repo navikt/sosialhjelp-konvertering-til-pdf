@@ -8,12 +8,18 @@ jobs:
     name: "Deploy to NAIS"
     runs-on: ubuntu-latest
     permissions:
+        contents: read
         id-token: write
     steps:
       - uses: actions/checkout@v6
+      - uses: nais/docker-build-push@v0
+        id: docker-push
+        with:
+          team: teamdigisos
       - uses: nais/deploy/actions/deploy@v2
         name: "Deploy til prod-gcp"
         env:
           CLUSTER: prod-gcp
           RESOURCE: nais/prod-gcp.yaml
+          IMAGE: ${{ steps.docker-push.outputs.image }}
           REF: ${{ github.sha }}
