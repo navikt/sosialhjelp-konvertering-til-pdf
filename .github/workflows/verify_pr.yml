@@ -25,6 +25,7 @@ jobs:
           docker run --detach \
             --name gotenberg-pr \
             --publish 127.0.0.1:3000:3000 \
+            --publish 127.0.0.1:9464:9464 \
             gotenberg-pr:test
 
           curl --fail --silent --show-error \
@@ -41,7 +42,7 @@ jobs:
           curl --fail --silent --show-error \
             --max-time 10 \
             --output "$RUNNER_TEMP/metrics.txt" \
-            http://127.0.0.1:3000/prometheus/metrics
+            http://127.0.0.1:9464/metrics
 
           if ! grep -Eq '^gotenberg_[a-zA-Z0-9_]+(\{|[[:space:]])' \
             "$RUNNER_TEMP/metrics.txt"; then
