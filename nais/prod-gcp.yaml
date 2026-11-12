@@ -15,6 +15,9 @@ spec:
     - "--libreoffice-auto-start"
     - "--webhook-disable"
   port: 3000
+  prometheus:
+    enabled: true
+    path: /prometheus/metrics
   liveness:
     path: /health
     initialDelay: 60
