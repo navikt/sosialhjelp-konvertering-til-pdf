@@ -16,7 +16,7 @@ jobs:
         id: docker-push
         with:
           team: teamdigisos
-      - uses: nais/deploy/actions/deploy@v2
+      - uses: nais/deploy/actions/deploy@v3
         name: "Deploy til prod-gcp"
         env:
           CLUSTER: prod-gcp
