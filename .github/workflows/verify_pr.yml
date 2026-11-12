@@ -15,7 +15,7 @@ jobs:
         shell: bash
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Build image
         run: docker build --pull --tag gotenberg-pr:test .
