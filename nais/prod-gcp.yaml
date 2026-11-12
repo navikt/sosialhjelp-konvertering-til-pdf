@@ -12,7 +12,8 @@ spec:
   port: 3000
   prometheus:
     enabled: true
-    path: /prometheus/metrics
+    path: /metrics
+    port: "9464"
   liveness:
     path: /health
     initialDelay: 60
