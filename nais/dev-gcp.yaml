@@ -39,6 +39,10 @@ spec:
   env:
     - name: OTEL_TRACES_EXPORTER
       value: otlp
+    - name: OTEL_METRICS_EXPORTER
+      value: prometheus
+    - name: OTEL_EXPORTER_PROMETHEUS_HOST
+      value: "0.0.0.0"
   resources:
     limits:
       memory: 1Gi
