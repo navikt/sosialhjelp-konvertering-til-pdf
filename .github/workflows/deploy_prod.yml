@@ -15,7 +15,7 @@ jobs:
         id-token: write
     steps:
       - uses: actions/checkout@v7
-      - uses: nais/docker-build-push@v0
+      - uses: nais/docker-build-push@v1
         id: docker-push
         with:
           team: teamdigisos
