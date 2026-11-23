@@ -71,6 +71,57 @@ jobs:
             exit 1
           fi
 
+      - name: Verify Norwegian characters in filenames
+        run: |
+          dir="$RUNNER_TEMP/aeoeaa"
+          mkdir -p "$dir"
+          printf '%s\n' \
+            "{\\rtf1\\ansi\\ansicpg1252 S\\'f8knad med \\'e6\\'f8\\'e5.}" \
+            > "$dir/æøå-søknad.rtf"
+          printf '%s\n' \
+            "{\\rtf1\\ansi\\ansicpg1252 Vedlegg \\'e5.}" \
+            > "$dir/vedlegg-å.rtf"
+
+          # Test 1: én fil gir PDF, filnavn fra Gotenberg-Output-Filename
+          curl --fail-with-body --silent --show-error \
+            --max-time 90 \
+            --header 'Gotenberg-Output-Filename: æøå-søknad' \
+            --form "files=@$dir/æøå-søknad.rtf" \
+            --dump-header "$dir/single-headers.txt" \
+            --output "$dir/single.pdf" \
+            http://127.0.0.1:3000/forms/libreoffice/convert
+
+          if [[ "$(head -c 5 "$dir/single.pdf")" != '%PDF-' ]]; then
+            echo '::error::Single conversion did not produce a PDF'
+            cat "$dir/single-headers.txt"
+            exit 1
+          fi
+
+          disposition="$(grep -i '^content-disposition:' "$dir/single-headers.txt" || true)"
+          echo "Content-Disposition: $disposition"
+          if ! grep -qiE 'søknad|s%C3%B8knad' <<< "$disposition"; then
+            echo "::error::Content-Disposition lost æøå: $disposition"
+            exit 1
+          fi
+
+          # Test 2: to filer gir ZIP, filnavn fra opplastede filer
+          curl --fail-with-body --silent --show-error \
+            --max-time 90 \
+            --form "files=@$dir/æøå-søknad.rtf" \
+            --form "files=@$dir/vedlegg-å.rtf" \
+            --output "$dir/result.zip" \
+            http://127.0.0.1:3000/forms/libreoffice/convert
+
+          entries="$(unzip -Z1 "$dir/result.zip")"
+          echo "ZIP entries:"
+          echo "$entries"
+          for expected in 'æøå-søknad' 'vedlegg-å'; do
+            if ! grep -qF "$expected" <<< "$entries"; then
+              echo "::error::ZIP entry '$expected' missing or renamed"
+              exit 1
+            fi
+          done
+
       - name: Print container logs on failure
         if: failure()
         run: |
