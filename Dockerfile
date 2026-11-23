@@ -1,3 +1,3 @@
-FROM gotenberg/gotenberg:9.4.0-libreoffice@sha256:4f8700501877b7198e1e393061add6ead52f4b0b2f1e4972a404be95b751d9e9
+FROM gotenberg/gotenberg:9.9.3-libreoffice@sha256:d7c238a1b1f5726c0e82e5838b2b5acbbead95a4f4a367c6ffa05c2dc20485f6
 
 CMD ["gotenberg", "--api-disable-health-check-route-telemetry", "--libreoffice-auto-start", "--webhook-disable"]
