@@ -19,6 +19,7 @@ jobs:
         id: docker-push
         with:
           team: teamdigisos
+          no_cache: "true"
       - uses: nais/deploy/actions/deploy@v3
         name: "Deploy til dev-gcp"
         env:
